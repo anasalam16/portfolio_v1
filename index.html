@@ -1019,4 +1019,181 @@
                     <p>Tech-Curators</p>
                 </div>
                 <div class="cert-card">
-                    <i class
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Data Analytics</h3>
+                    <p>Coursera</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Get In Touch</h2>
+            </div>
+            <div class="contact-info">
+                <div class="contact-item" style="justify-content: center; margin-bottom: 30px;">
+                    <i class="fas fa-phone"></i>
+                    <span>+91-9654958673</span>
+                </div>
+                <div class="contact-item" style="justify-content: center; margin-bottom: 30px;">
+                    <i class="fas fa-envelope"></i>
+                    <span>anasalam835@gmail.com</span>
+                </div>
+            </div>
+            <!-- Download CV Button in Contact Section -->
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="https://drive.google.com/file/d/1IDu8g5WfCx9HnCJiVgPg5LpK14a2qLNJ/view" class="download-cv-btn" target="_blank">
+                    <i class="fas fa-download"></i> Download CV
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <h2>Mohd Anas Alam</h2>
+                <p>Data Analyst, Networking & Cloud Engineer </p>
+            </div>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/mohammad-anas-alam-982925260" class="social-link" target="_blank">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com/yourusername" class="social-link" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://twitter.com/yourusername" class="social-link" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="mailto:anasalam835@gmail.com" class="social-link">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Mohd Anas Alam. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+
+        // Mobile Navigation
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.querySelector('i').classList.toggle('fa-times');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.querySelector('i').classList.remove('fa-times');
+                hamburger.querySelector('i').classList.add('fa-bars');
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = `fadeInUp 1s ease forwards`;
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.skill-category, .project-card, .cert-card, .timeline-item').forEach(el => {
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+
+        // Image handling functions
+        function handleImageError(img) {
+            console.log('Image failed to load:', img.src);
+            img.style.display = 'none';
+            const fallback = document.getElementById('fallback-img');
+            if (fallback) {
+                fallback.style.display = 'flex';
+            }
+            
+            // Debug info
+            const debug = document.getElementById('imageDebug');
+            if (debug) {
+                debug.style.display = 'block';
+                debug.innerHTML = `Image failed: ${img.src}<br>Width: ${window.innerWidth}px<br>Device: ${navigator.userAgent}`;
+            }
+            
+            // Try alternative paths on mobile
+            if (window.innerWidth <= 768) {
+                tryAlternativeImagePaths();
+            }
+        }
+
+        function tryAlternativeImagePaths() {
+            const fallback = document.getElementById('fallback-img');
+            const debug = document.getElementById('imageDebug');
+            
+            // List of alternative paths to try
+            const alternativePaths = [
+                './image/Anas-Alam.jpg',
+                'image/Anas-Alam.jpg',
+                '/image/Anas-Alam.jpg',
+                'Anas-Alam.jpg',
+                './Anas-Alam.jpg'
+            ];
+            
+            let currentIndex = 0;
+            
+            function tryNextPath() {
+                if (currentIndex >= alternativePaths.length) return;
+                
+                const testImg = new Image();
+                testImg.onload = function() {
+                    // This path works, update the main image
+                    const mainImg = document.getElementById('profileImage');
+                    if (mainImg) {
+                        mainImg.src = alternativePaths[currentIndex];
+                        mainImg.style.display = 'block';
+                        if (fallback) fallback.style.display = 'none';
+                        
+                        if (debug) {
+                            debug.innerHTML += `<br>Success with: ${alternativePaths[currentIndex]}`;
+                        }
+                    }
+                };
+                
+                testImg.onerror = function() {
+                    currentIndex++;
+                    tryNextPath();
+                };
+                
+                testImg.src = alternativePaths[currentIndex];
+            }
+            
+            tryNext
