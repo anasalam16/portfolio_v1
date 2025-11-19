@@ -43,7 +43,6 @@
             color: var(--text-color);
             transition: var(--transition);
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
         .container {
@@ -290,36 +289,27 @@
             position: relative;
         }
 
-        .profile-img-container {
+        .profile-img img {
             width: 300px;
             height: 300px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .profile-img img {
-            width: 100%;
-            height: 100%;
             border-radius: 50%;
             object-fit: cover;
             border: 5px solid var(--primary-color);
             box-shadow: var(--shadow);
             animation: float 3s ease-in-out infinite;
-            display: block;
         }
 
         /* Fallback image styling */
         .fallback-img {
-            width: 100%;
-            height: 100%;
+            width: 300px;
+            height: 300px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 3rem;
-            font-weight: bold;
+            font-size: 1.5rem;
             border: 5px solid var(--primary-color);
             box-shadow: var(--shadow);
             animation: float 3s ease-in-out infinite;
@@ -707,59 +697,10 @@
             .btn, .download-cv-btn {
                 width: 200px;
             }
-
-            .profile-img-container {
-                width: 250px;
-                height: 250px;
-            }
-
-            .fallback-img {
-                font-size: 2.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .profile-img-container {
-                width: 200px;
-                height: 200px;
-            }
-
-            .fallback-img {
-                font-size: 2rem;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .section-title h2 {
-                font-size: 2rem;
-            }
-        }
-
-        /* Debug styles for image */
-        .image-debug {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            z-index: 9999;
-            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Debug info (remove in production) -->
-    <div class="image-debug" id="imageDebug"></div>
-
     <!-- Header & Navigation -->
     <header>
         <div class="container">
@@ -830,14 +771,10 @@
                     </a>
                 </div>
                 <div class="profile-img">
-                    <div class="profile-img-container">
-                        <!-- Multiple image path options for different scenarios -->
-                        <img src="image/Anas-Alam.jpg" alt="Mohd Anas Alam" 
-                             onerror="handleImageError(this)"
-                             id="profileImage">
-                        <div id="fallback-img" class="fallback-img" style="display: none;">
-                            <span>MA</span>
-                        </div>
+                    <!-- Multiple image path options for GitHub Pages -->
+                    <img src="image/Anas-Alam.jpg" alt="Mohd Anas Alam" onerror="this.style.display='none'; document.getElementById('fallback-img').style.display='flex';">
+                    <div id="fallback-img" class="fallback-img" style="display: none;">
+                        <span>MA</span>
                     </div>
                 </div>
             </div>
@@ -1133,67 +1070,29 @@
             observer.observe(el);
         });
 
-        // Image handling functions
-        function handleImageError(img) {
-            console.log('Image failed to load:', img.src);
-            img.style.display = 'none';
-            const fallback = document.getElementById('fallback-img');
-            if (fallback) {
-                fallback.style.display = 'flex';
-            }
+        // Image fallback handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileImg = document.querySelector('.profile-img img');
+            const fallbackImg = document.getElementById('fallback-img');
             
-            // Debug info
-            const debug = document.getElementById('imageDebug');
-            if (debug) {
-                debug.style.display = 'block';
-                debug.innerHTML = `Image failed: ${img.src}<br>Width: ${window.innerWidth}px<br>Device: ${navigator.userAgent}`;
-            }
-            
-            // Try alternative paths on mobile
-            if (window.innerWidth <= 768) {
-                tryAlternativeImagePaths();
-            }
-        }
-
-        function tryAlternativeImagePaths() {
-            const fallback = document.getElementById('fallback-img');
-            const debug = document.getElementById('imageDebug');
-            
-            // List of alternative paths to try
-            const alternativePaths = [
-                './image/Anas-Alam.jpg',
-                'image/Anas-Alam.jpg',
-                '/image/Anas-Alam.jpg',
-                'Anas-Alam.jpg',
-                './Anas-Alam.jpg'
-            ];
-            
-            let currentIndex = 0;
-            
-            function tryNextPath() {
-                if (currentIndex >= alternativePaths.length) return;
-                
-                const testImg = new Image();
-                testImg.onload = function() {
-                    // This path works, update the main image
-                    const mainImg = document.getElementById('profileImage');
-                    if (mainImg) {
-                        mainImg.src = alternativePaths[currentIndex];
-                        mainImg.style.display = 'block';
-                        if (fallback) fallback.style.display = 'none';
-                        
-                        if (debug) {
-                            debug.innerHTML += `<br>Success with: ${alternativePaths[currentIndex]}`;
-                        }
+            // Check if image loaded successfully
+            if (profileImg) {
+                profileImg.addEventListener('error', function() {
+                    this.style.display = 'none';
+                    if (fallbackImg) {
+                        fallbackImg.style.display = 'flex';
                     }
-                };
+                });
                 
-                testImg.onerror = function() {
-                    currentIndex++;
-                    tryNextPath();
-                };
-                
-                testImg.src = alternativePaths[currentIndex];
+                // Also check if image is already broken
+                if (profileImg.complete && profileImg.naturalHeight === 0) {
+                    profileImg.style.display = 'none';
+                    if (fallbackImg) {
+                        fallbackImg.style.display = 'flex';
+                    }
+                }
             }
-            
-            tryNext
+        });
+    </script>
+</body>
+</html>
