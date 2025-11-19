@@ -290,8 +290,8 @@
         }
 
         .profile-img-container {
-            width: 300px;
-            height: 300px;
+            width: 400px; /* Increased from 300px */
+            height: 400px; /* Increased from 300px */
             margin: 0 auto;
             position: relative;
         }
@@ -301,7 +301,7 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 5px solid var(--primary-color);
+            border: 8px solid var(--primary-color); /* Thicker border */
             box-shadow: var(--shadow);
             animation: float 3s ease-in-out infinite;
             display: block;
@@ -317,9 +317,9 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 3rem;
+            font-size: 4rem; /* Increased from 3rem */
             font-weight: bold;
-            border: 5px solid var(--primary-color);
+            border: 8px solid var(--primary-color); /* Thicker border */
             box-shadow: var(--shadow);
             animation: float 3s ease-in-out infinite;
         }
@@ -726,23 +726,23 @@
             }
 
             .profile-img-container {
-                width: 250px;
-                height: 250px;
+                width: 320px; /* Adjusted for mobile */
+                height: 320px; /* Adjusted for mobile */
             }
 
             .fallback-img {
-                font-size: 2.5rem;
+                font-size: 3.5rem; /* Adjusted for mobile */
             }
         }
 
         @media (max-width: 480px) {
             .profile-img-container {
-                width: 200px;
-                height: 200px;
+                width: 280px; /* Adjusted for small mobile */
+                height: 280px; /* Adjusted for small mobile */
             }
 
             .fallback-img {
-                font-size: 2rem;
+                font-size: 3rem; /* Adjusted for small mobile */
             }
 
             .hero h1 {
